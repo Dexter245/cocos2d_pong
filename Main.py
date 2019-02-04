@@ -7,7 +7,7 @@ from cocos.particle import Color
 from Bat import Bat
 from pyglet.window import key
 
-from Utils import CollidableColorLayer
+from Utils import CollidableColorLayer, Direction
 
 
 class Main(cocos.layer.Layer):
@@ -47,10 +47,10 @@ class Main(cocos.layer.Layer):
                 bat_collides_bottom = True
         if key.W in self.keys_pressed:
             if not bat_collides_top:
-                self.bat.move_bat(Bat.Direction.UP)
+                self.bat.move_bat(Direction.UP)
         if key.S in self.keys_pressed:
             if not bat_collides_bottom:
-                self.bat.move_bat(Bat.Direction.DOWN)
+                self.bat.move_bat(Direction.DOWN)
 
     def on_key_press(self, key, modifiers):
         self.keys_pressed.append(key)

@@ -1,5 +1,15 @@
+from enum import Enum
+
 from cocos.collision_model import AARectShape
 from cocos.layer import ColorLayer
+
+
+class Direction(Enum):
+    UP = 1
+    DOWN = -1
+    LEFT = -1
+    RIGHT = 1
+    NONE = 0
 
 
 class CollidableColorLayer(ColorLayer):

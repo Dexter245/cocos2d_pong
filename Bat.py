@@ -3,7 +3,7 @@ from enum import Enum
 import cocos
 from cocos.collision_model import AARectShape
 
-from Utils import CollidableColorLayer
+from Utils import CollidableColorLayer, Direction
 
 
 class Bat(CollidableColorLayer):
@@ -13,14 +13,9 @@ class Bat(CollidableColorLayer):
     COLOR = (255, 255, 255)
     delta = 0.0
 
-    class Direction(Enum):
-        UP = 1
-        DOWN = -1
-        NONE = 0
-
     def __init__(self, position: (int, int)):
         super(Bat, self).__init__(position, Bat.WIDTH, Bat.HEIGHT, Bat.COLOR)
-        self.dir = self.Direction.NONE
+        self.dir = Direction.NONE
         print("cshape: " + str(self.cshape))
 
     def move_bat(self, dir: Direction):
