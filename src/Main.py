@@ -2,10 +2,11 @@ import cocos
 import pyglet
 from cocos.collision_model import CollisionManagerBruteForce
 
-from src.Bat import Bat
+from Ball import Ball
+from Bat import Bat
 from pyglet.window import key
 
-from src.Utils import CollidableColorLayer, Direction
+from Utils import CollidableColorLayer
 
 
 class Main(cocos.layer.Layer):
@@ -28,27 +29,39 @@ class Main(cocos.layer.Layer):
         self.bat = Bat((100, Main.SCREEN_HEIGHT / 2))
         self.add(self.bat)
         self.collisionManager.add(self.bat)
+        self.ball = Ball((1280 / 2, 720 / 2))
+        self.add(self.ball)
+        self.collisionManager.add(self.ball)
 
         self.createWalls()
 
     def update(self, delta):
         print()
         self.bat.update(delta)
+        self.ball.update(delta)
 
         bat_collisions = self.collisionManager.objs_near(self.bat, 0.1)
-        bat_collides_top = False
-        bat_collides_bottom = False
-        for collision in bat_collisions:
-            if collision == self.wall_top:
-                bat_collides_top = True
-            if collision == self.wall_bottom:
-                bat_collides_bottom = True
+
         if key.W in self.keys_pressed:
-            if not bat_collides_top:
-                self.bat.move_bat(Direction.UP)
+            if not self.wall_top in bat_collisions:
+                self.bat.move_bat(Bat.Direction.UP)
         if key.S in self.keys_pressed:
-            if not bat_collides_bottom:
-                self.bat.move_bat(Direction.DOWN)
+            if not self.wall_bottom in bat_collisions:
+                self.bat.move_bat(Bat.Direction.DOWN)
+
+        ball_collisions = self.collisionManager.objs_near(self.ball, 0.1)
+        print("ball_collisions: " + str(ball_collisions))
+        if self.wall_top in ball_collisions or self.wall_bottom in ball_collisions:
+            self.ball.flip_y_dir()
+        if self.bat in ball_collisions:
+            self.ball.flip_x_dir()
+        if self.wall_left in ball_collisions:
+            #todo: lose point
+            pass
+        if self.wall_right in ball_collisions:
+            #todo: earn point
+            self.ball.flip_x_dir()
+
 
     def on_key_press(self, key, modifiers):
         self.keys_pressed.append(key)

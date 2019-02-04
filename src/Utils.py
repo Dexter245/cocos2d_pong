@@ -4,14 +4,6 @@ from cocos.collision_model import AARectShape
 from cocos.layer import ColorLayer
 
 
-class Direction(Enum):
-    UP = 1
-    DOWN = -1
-    LEFT = -1
-    RIGHT = 1
-    NONE = 0
-
-
 class CollidableColorLayer(ColorLayer):
 
     def __init__(self, position: (int, int), width: int, height: int,
@@ -24,6 +16,7 @@ class CollidableColorLayer(ColorLayer):
     def moveBy(self, amount: (int, int)):
         self.x += amount[0]
         self.y += amount[1]
+        print("amount: " + str(amount))
         self.__refreshCShape()
 
     def moveTo(self, position: (int, int)):
