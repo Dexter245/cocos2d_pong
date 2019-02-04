@@ -1,13 +1,11 @@
 import cocos
 import pyglet
-from cocos.collision_model import CollisionManager, CollisionManagerGrid, AARectShape, CollisionManagerBruteForce
-from cocos.layer import ColorLayer
-from cocos.particle import Color
+from cocos.collision_model import CollisionManagerBruteForce
 
-from Bat import Bat
+from src.Bat import Bat
 from pyglet.window import key
 
-from Utils import CollidableColorLayer, Direction
+from src.Utils import CollidableColorLayer, Direction
 
 
 class Main(cocos.layer.Layer):

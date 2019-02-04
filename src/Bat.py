@@ -1,9 +1,4 @@
-from enum import Enum
-
-import cocos
-from cocos.collision_model import AARectShape
-
-from Utils import CollidableColorLayer, Direction
+from src.Utils import CollidableColorLayer, Direction
 
 
 class Bat(CollidableColorLayer):
