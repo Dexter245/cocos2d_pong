@@ -1,6 +1,6 @@
 from enum import Enum
 
-from Utils import CollidableColorLayer
+from Utils import CollidableColorLayer, Direction
 
 
 class Bat(CollidableColorLayer):
@@ -9,13 +9,6 @@ class Bat(CollidableColorLayer):
     MOVE_SPEED = 200
     COLOR = (255, 255, 255)
     delta = 0.0
-
-    class Direction(Enum):
-        UP = 1
-        DOWN = -1
-        LEFT = -1
-        RIGHT = 1
-        NONE = 0
 
     def __init__(self, position: (int, int)):
         super(Bat, self).__init__(position, Bat.WIDTH, Bat.HEIGHT, Bat.COLOR)
