@@ -10,6 +10,10 @@ class Direction(Enum):
     RIGHT = 1
     NONE = 0
 
+class Gamestate(Enum):
+    RUNNING = 1
+    ENDED = 0
+
 class CollidableColorLayer(ColorLayer):
 
     def __init__(self, position: (int, int), width: int, height: int,

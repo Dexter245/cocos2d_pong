@@ -1,13 +1,15 @@
 import cocos
 import pyglet
+import time
 from cocos.collision_model import CollisionManagerBruteForce
+from cocos.text import Label
 
 from Ball import Ball
 from Bat import Bat
 from pyglet.window import key
 
 from PerfectEnemy import PerfectEnemy
-from Utils import CollidableColorLayer, Direction
+from Utils import CollidableColorLayer, Direction, Gamestate
 
 
 class Main(cocos.layer.Layer):
@@ -17,10 +19,11 @@ class Main(cocos.layer.Layer):
     KEY_MOVE_UP = pyglet.window.key.W
     KEY_MOVE_DOWN = pyglet.window.key.S
 
-    def __init__(self):
+    def __init__(self, fastmode:bool = False):
         super(Main, self).__init__()
         print(str(Main.SCREEN_HEIGHT))
 
+        self.fastmode = fastmode
         self.is_event_handler = True
         self.keys_pressed = []
         cocos.director.director.set_show_FPS(True)
@@ -39,11 +42,23 @@ class Main(cocos.layer.Layer):
 
         self.createWalls()
 
+        self.label_time = Label("Time: ", font_name="Arial", font_size=36, align="center")
+        self.label_time.position = (Main.SCREEN_WIDTH/2, Main.SCREEN_HEIGHT/2)
+        self.add(self.label_time)
+
+        self.gamestate = Gamestate.RUNNING
+        self.score = 0.0
+
     def update(self, delta):
         print()
-        self.bat.update(delta)
-        self.ball.update(delta)
-        self.enemy.update(delta)
+        if self.fastmode:
+            delta = 0.16
+        if self.gamestate == Gamestate.RUNNING:
+            self.score += delta
+            self.label_time.element.text = "%.1fs" % self.score
+            self.bat.update(delta)
+            self.ball.update(delta)
+            self.enemy.update(delta)
 
         bat_collisions = self.collisionManager.objs_near(self.bat, 0.0001)
 
@@ -61,13 +76,20 @@ class Main(cocos.layer.Layer):
         if self.bat in ball_collisions or self.enemy in ball_collisions:
             self.ball.flip_x_dir()
         if self.wall_left in ball_collisions:
-            # todo: lose point
+            self.on_game_end()
             pass
         if self.wall_right in ball_collisions:
             # todo: earn point
             self.ball.flip_x_dir()
+        # time.sleep(2)
+
+    def on_game_end(self):
+        print("on_game_end. time: " + str(self.score))
+        self.gamestate = Gamestate.ENDED
+        cocos.director.director.scene.end(self.score)
 
     def on_key_press(self, key, modifiers):
+        print("on_key_press")
         self.keys_pressed.append(key)
 
     def on_key_release(self, key, modifiers):
@@ -101,7 +123,10 @@ class Main(cocos.layer.Layer):
         self.collisionManager.add(self.wall_bottom)
 
 
-cocos.director.director.init(width=Main.SCREEN_WIDTH, height=Main.SCREEN_HEIGHT, resizable=True)
-main = Main()
+cocos.director.director.init(width=Main.SCREEN_WIDTH, height=Main.SCREEN_HEIGHT, resizable=True, vsync=False)
+main = Main(fastmode=False)
+# main = Main(fastmode=True)
 main_scene = cocos.scene.Scene(main)
 cocos.director.director.run(main_scene)
+score = cocos.director.director.return_value
+print("score: " + str(score))

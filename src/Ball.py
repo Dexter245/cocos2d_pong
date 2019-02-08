@@ -8,7 +8,7 @@ class Ball(CollidableColorLayer):
     HEIGHT = 50
     MOVE_SPEED = 250
     COLOR = (255, 255, 255)
-    DELTA = 0.1
+    DELTA = 1.1
     delta = 0.0
 
     class Direction(Enum):
