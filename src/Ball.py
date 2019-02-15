@@ -56,7 +56,7 @@ class Ball(CollidableColorLayer):
             self.moveBy((0, Ball.DELTA))
 
     def __move_ball(self):
-        print("dir: " + str(self.dir) + ", dir.value: " + str(self.dir.value) + ", value0: " +
-              str(self.dir.value[0]) + ", value1: " + str(self.dir.value[1]))
+        # print("dir: " + str(self.dir) + ", dir.value: " + str(self.dir.value) + ", value0: " +
+        #       str(self.dir.value[0]) + ", value1: " + str(self.dir.value[1]))
         self.moveBy((self.dir.value[0] * Ball.MOVE_SPEED * self.delta,
                      self.dir.value[1] * Ball.MOVE_SPEED * self.delta))

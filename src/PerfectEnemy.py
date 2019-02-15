@@ -3,7 +3,6 @@ from Utils import CollidableColorLayer, Direction
 
 
 class PerfectEnemy(CollidableColorLayer):
-
     WIDTH = 50
     HEIGHT = 200
     MOVE_SPEED = 200
@@ -21,7 +20,7 @@ class PerfectEnemy(CollidableColorLayer):
         self.delta = delta
 
         # self.moveBy((0, dir.value * self.MOVE_SPEED * self.delta))
-        y = self.ball.y + self.ball.height/2 - PerfectEnemy.HEIGHT/2
+        y = self.ball.y + self.ball.height / 2 - PerfectEnemy.HEIGHT / 2
         if y < 10:
             y = 10
         elif y > 720 - PerfectEnemy.HEIGHT:
