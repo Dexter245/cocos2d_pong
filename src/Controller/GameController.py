@@ -3,6 +3,8 @@ from cocos.cocosnode import CocosNode
 from cocos.layer import Layer
 from pyglet.window import key
 
+from Controller.NetBatController import NetBatController
+from Controller.PlayerBatController import PlayerBatController
 from Model.GameModel import GameModel
 from Utils import Gamestate, Direction
 
@@ -14,8 +16,12 @@ class GameController(Layer):
 
         self.model = model
         self.delta = 0.16
-        self.is_event_handler = True
-        self.keys_pressed = []
+
+        if not self.model.net:
+            self.bat_controller = PlayerBatController()
+            self.add(self.bat_controller)
+        else:
+            self.bat_controller = NetBatController(self.model)
 
         self.model.collision_manager.add(self.model.bat)
         self.model.collision_manager.add(self.model.ball)
@@ -36,22 +42,14 @@ class GameController(Layer):
             self.model.ball.update(delta)
             self.model.enemy.update(delta)
 
+        self.bat_controller.update(delta)
+
         bat_collisions = self.model.collision_manager.objs_near(self.model.bat, 0.0001)
 
-        if self.model.net is not None:
-            net_in = (self.model.bat.y, self.model.ball.x, self.model.ball.y)
-            # print("net_in: " + str(net_in))
-            net_out = self.model.net.activate(net_in)
-            # print("net_out: " + str(net_out))
-        else:
-            # print("net is None")
-            pass
-
-        #todo: batController classes
-        if key.W in self.keys_pressed:
+        if self.bat_controller.action_up:
             if not self.model.wall_top in bat_collisions:
                 self.model.bat.move_bat(Direction.UP)
-        if key.S in self.keys_pressed:
+        if self.bat_controller.action_down:
             if not self.model.wall_bottom in bat_collisions:
                 self.model.bat.move_bat(Direction.DOWN)
 
@@ -72,14 +70,6 @@ class GameController(Layer):
         print("on_game_end. time: " + str(self.model.score))
         self.gamestate = Gamestate.ENDED
         cocos.director.director.scene.end(self.model.score)
-
-    def on_key_press(self, key, modifiers):
-        print("on_key_press")
-        self.keys_pressed.append(key)
-
-    def on_key_release(self, key, modifiers):
-        if key in self.keys_pressed:
-            self.keys_pressed.remove(key)
 
     def on_mouse_motion(self, x, y, dx, dy):
         pass

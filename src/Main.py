@@ -21,7 +21,7 @@ class Main(cocos.layer.Layer):
     def __init__(self, fastmode: bool = False, net=None):
         super(Main, self).__init__()
 
-        self.model: GameModel = GameModel(fastmode)
+        self.model: GameModel = GameModel(fastmode, net)
         self.controller: GameController = GameController(self.model)
         self.renderer: Renderer = DefaultRenderer(self.model)
 
@@ -35,7 +35,7 @@ class Main(cocos.layer.Layer):
 
 
     def update(self, delta):
-        print()
+        # print()
         if self.model.fastmode:
             delta = 0.16
         self.delta = delta
@@ -48,16 +48,16 @@ class Main(cocos.layer.Layer):
 
 
 
-def get_score(net):
+def get_score(net, fastmode=True):
     if not hasattr(cocos.director.director, "window"):
         cocos.director.director.init(width=Main.SCREEN_WIDTH, height=Main.SCREEN_HEIGHT, resizable=True, vsync=False)
-    main = Main()
-    # main = Main(fastmode=True, net=net)
+    # main = Main()
+    main = Main(fastmode=fastmode, net=net)
     main_scene = cocos.scene.Scene(main)
     cocos.director.director.run(main_scene)
     return cocos.director.director.return_value
 
 
 
-score = get_score(net=None)
-print("score: " + str(score))
+# score = get_score(net=None, fastmode=False)
+# print("score: " + str(score))

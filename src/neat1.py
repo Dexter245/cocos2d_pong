@@ -15,7 +15,7 @@ xor_outputs = [   (0.0,),     (1.0,),     (1.0,),     (0.0,)]
 def eval_genomes(genomes, config):
     for genome_id, genome in genomes:
         net = neat.nn.FeedForwardNetwork.create(genome, config)
-        genome.fitness = Main.get_score(net=net)
+        genome.fitness = Main.get_score(net=net, fastmode=False)
         print("fitness: " + str(genome.fitness))
         # for xi, xo in zip(xor_inputs, xor_outputs):
         #     output = net.activate(xi)
