@@ -6,10 +6,9 @@ from Utils import CollidableColorLayer
 class Ball(CollidableColorLayer):
     WIDTH = 50
     HEIGHT = 50
-    MOVE_SPEED = 250
+    MOVE_SPEED = 500
     COLOR = (255, 255, 255)
-    DELTA = 1.1
-    delta = 0.0
+    DELTA = MOVE_SPEED / 50.0
 
     class Direction(Enum):
         NONE = (0, 0)

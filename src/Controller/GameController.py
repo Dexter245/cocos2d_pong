@@ -1,5 +1,6 @@
 import cocos
 from cocos.cocosnode import CocosNode
+from cocos.director import director
 from cocos.layer import Layer
 from pyglet.window import key
 
@@ -34,6 +35,8 @@ class GameController(Layer):
 
         self.gamestate = Gamestate.RUNNING
 
+        self.is_event_handler = True
+
     def update(self, delta: float):
 
         if self.model.gamestate == Gamestate.RUNNING:
@@ -66,12 +69,17 @@ class GameController(Layer):
             self.model.ball.flip_x_dir()
         # time.sleep(2)
 
-    def on_game_end(self):
-        print("on_game_end. time: " + str(self.model.score))
-        self.gamestate = Gamestate.ENDED
-        cocos.director.director.scene.end(self.model.score)
+    def on_key_press(self, k, modifiers):
+        # print("on_key_press")
+        if k == key.SPACE:
+            self.model.fastmode = not self.model.fastmode
 
     def on_mouse_motion(self, x, y, dx, dy):
         pass
         # print("on_mouse_motion")
         # self.bat.position = x, y
+
+    def on_game_end(self):
+        # print("on_game_end. time: " + str(self.model.score))
+        self.gamestate = Gamestate.ENDED
+        director.scene.end(self.model.score)
